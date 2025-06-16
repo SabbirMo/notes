@@ -32,4 +32,25 @@ class HomeController extends GetxController{
     update();
   }
 
+  Future<void> deleteNote(int index) async {
+    final noteId = notes[index].id;
+
+    await _fireStore.collection('notes').doc(noteId).delete();
+
+    notes.removeAt(index);
+    update();
+  }
+
+
+  Future<void> editNote({required id, required newTitle, required newDescription}) async {
+
+    await _fireStore.collection('notes').doc(id).update({
+      'title': newTitle,
+      'description': newDescription,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+    update();
+
+  }
+
 }

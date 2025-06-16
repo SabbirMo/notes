@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:notes/src/features/auth/edit_note/edit_note_screen.dart';
 import 'package:notes/src/features/auth/home/presentation/controller/home_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,9 +32,41 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               return Card(
                 margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: ListTile(
-                  title: Text(controller.notes[index].title),
-                  subtitle: Text(controller.notes[index].description),
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(controller.notes[index].title),
+                      subtitle: Text(controller.notes[index].description),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditNoteScreen(
+                                  note: controller.notes[index],
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            controller.deleteNote(index);
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                            size: 28,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               );
             },
